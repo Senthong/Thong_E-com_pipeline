@@ -1,0 +1,28 @@
+name: ecom_pipeline
+version: '1.0.0'
+config-version: 2
+
+profile: ecom_pipeline
+
+model-paths: ["models"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+models:
+  ecom_pipeline:
+    staging:
+      +materialized: view          # Staging = view, không tốn storage
+      +schema: staging
+    warehouse:
+      +materialized: incremental   # Warehouse = incremental, chỉ append data mới
+      +schema: warehouse
+    marts:
+      +materialized: table         # Marts = table, query nhanh cho BI tool
+      +schema: marts
+      +partition_by:
+        field: report_date
+        data_type: date
+        granularity: day

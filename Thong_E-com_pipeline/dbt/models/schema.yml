@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: "Validated orders từ raw BigQuery table"
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+          - unique
+      - name: quantity
+        tests:
+          - not_null
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['completed', 'pending', 'cancelled']
+
+  - name: stg_customers
+    description: "Cleaned customers"
+    columns:
+      - name: customer_id
+        tests:
+          - not_null
+          - unique
+
+  - name: stg_products
+    description: "Cleaned products"
+    columns:
+      - name: product_id
+        tests:
+          - not_null
+          - unique
+
+  - name: fct_orders
+    description: "Fact table — enriched orders với profit calculation"
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+          - unique
+      - name: profit
+        description: "Có thể âm nếu unit_price thấp hơn cost (discount scenario)"
+
+  - name: mart_daily_revenue
+    description: "Daily business metrics"
+    columns:
+      - name: report_date
+        tests:
+          - not_null
+          - unique
+      - name: cancel_rate
+        tests:
+          - not_null
+
+  - name: mart_product_performance
+    description: "Product metrics theo ngày"
+    columns:
+      - name: report_date
+        tests:
+          - not_null
+      - name: product_id
+        tests:
+          - not_null
+
+  - name: mart_customer_segments
+    description: "Customer segment metrics theo ngày"
+    columns:
+      - name: report_date
+        tests:
+          - not_null
