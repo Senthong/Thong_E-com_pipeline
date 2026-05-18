@@ -1,6 +1,6 @@
 # E-Commerce Data Pipeline — Cloud Version
 
-Pipeline ETL daily cho e-commerce, mở rộng từ bản PostgreSQL gốc lên **GCS + BigQuery + dbt**.
+Pipeline ETL daily cho e-commerce
 
 ## Architecture
 
@@ -33,13 +33,13 @@ generate_daily_data
        ↓
    run_staging
        ↓
-  upload_to_gcs          ← NEW
+  upload_to_gcs          
        ↓
- load_to_bigquery         ← NEW
+ load_to_bigquery         
        ↓
-    dbt_run               ← NEW
+    dbt_run               
        ↓
-    dbt_test              ← NEW
+    dbt_test            
 ```
 
 ## Setup

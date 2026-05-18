@@ -1,15 +1,9 @@
 """
-etl_dag.py  — Cloud version
+etl_dag.py 
 DAG chạy 1:00 AM mỗi ngày.
 
-Flow mới:
+Flow:
   generate → staging (PG) → upload GCS → load BigQuery → dbt run → dbt test
-
-Thêm so với bản gốc:
-  - Task upload_to_gcs: export validated staging data lên GCS
-  - Task load_to_bigquery: load Parquet từ GCS vào BigQuery raw tables
-  - Task dbt_run: chạy tất cả dbt models (staging → warehouse → marts)
-  - Task dbt_test: chạy dbt tests để validate data quality
 """
 import sys
 sys.path.insert(0, "/opt/airflow/scripts")
@@ -44,7 +38,7 @@ with DAG(
     tags=["ecom", "etl", "daily", "bigquery", "gcs", "dbt"],
 ) as dag:
 
-    # ── LAYER 1: Generate raw data ──────────────────────────────────────────
+    # Generate raw data 
     t1 = PythonOperator(
         task_id="generate_daily_data",
         python_callable=generate_daily_data,
@@ -52,7 +46,7 @@ with DAG(
         doc_md="Sinh ~250 đơn hàng giả lập vào PostgreSQL raw tables",
     )
 
-    # ── LAYER 2: Staging (validate trong PostgreSQL) ────────────────────────
+    # Staging (validate trong PostgreSQL) 
     t2 = PythonOperator(
         task_id="run_staging",
         python_callable=run_staging,
@@ -60,7 +54,7 @@ with DAG(
         doc_md="Validate + clean raw data → staging layer với is_valid flag",
     )
 
-    # ── LAYER 3a: Upload lên GCS ────────────────────────────────────────────
+    # Upload lên GCS 
     t3 = PythonOperator(
         task_id="upload_to_gcs",                # NEW
         python_callable=upload_staging_to_gcs,
@@ -68,7 +62,7 @@ with DAG(
         doc_md="Export validated staging data → GCS dưới dạng Parquet (partitioned by date)",
     )
 
-    # ── LAYER 3b: Load vào BigQuery ─────────────────────────────────────────
+    # Load vào BigQuery
     t4 = PythonOperator(
         task_id="load_to_bigquery",             # NEW
         python_callable=load_gcs_to_bq,
@@ -76,7 +70,7 @@ with DAG(
         doc_md="Load Parquet từ GCS → BigQuery raw tables (partitioned, clustered)",
     )
 
-    # ── LAYER 4: dbt transform ──────────────────────────────────────────────
+    #dbt transform
     t5 = BashOperator(
         task_id="dbt_run",                      # NEW
         bash_command=(
@@ -86,9 +80,9 @@ with DAG(
         doc_md="Chạy dbt models: staging views → fct_orders (incremental) → marts (table)",
     )
 
-    # ── LAYER 5: dbt test ───────────────────────────────────────────────────
+    # dbt test
     t6 = BashOperator(
-        task_id="dbt_test",                     # NEW
+        task_id="dbt_test",                  
         bash_command=(
             "cd /opt/airflow/dbt && "
             "dbt test --profiles-dir . --project-dir . --target dev"

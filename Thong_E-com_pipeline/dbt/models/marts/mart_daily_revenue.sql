@@ -26,7 +26,6 @@ SELECT
         COUNTIF(status = 'cancelled') * 100.0 / NULLIF(COUNT(*), 0), 2
     )                                                                 AS cancel_rate,
     ROUND(AVG(IF(status = 'completed', total_amount, NULL)), 2)       AS avg_order_value,
-    -- Thêm mới so với bản PostgreSQL: profit margin %
     ROUND(
         SUM(IF(status = 'completed', profit, 0))
         / NULLIF(SUM(IF(status = 'completed', total_amount, 0)), 0) * 100, 2

@@ -40,7 +40,7 @@ services:
       DB_USER: airflow
       DB_PASSWORD: airflow
 
-      # ── GCP config (thêm mới) ──────────────────────────────────────────
+      # GCP config
       GCP_PROJECT_ID: ${GCP_PROJECT_ID}
       GCS_BUCKET: ${GCS_BUCKET:-ecom-pipeline-raw}
       GCS_PREFIX: staging
@@ -53,7 +53,6 @@ services:
       - ./scripts:/opt/airflow/scripts
       - ./dbt:/opt/airflow/dbt
       - airflow_logs:/opt/airflow/logs
-      # Mount GCP service account key (đặt file key tại ./secrets/gcp-sa-key.json)
       - ./secrets:/opt/airflow/secrets:ro
     ports:
       - "8080:8080"

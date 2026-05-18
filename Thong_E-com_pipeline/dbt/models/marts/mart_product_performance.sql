@@ -24,7 +24,6 @@ SELECT
         SUM(IF(status = 'completed', profit, 0))
         / NULLIF(SUM(IF(status = 'completed', total_amount, 0)), 0) * 100, 2
     )                                                                       AS profit_margin_pct,
-    -- Rank sản phẩm theo revenue trong ngày
     RANK() OVER (PARTITION BY order_date ORDER BY SUM(IF(status = 'completed', total_amount, 0)) DESC) AS revenue_rank
 
 FROM {{ ref('fct_orders') }}
