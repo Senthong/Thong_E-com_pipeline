@@ -101,19 +101,6 @@ dbt run       # Chạy tất cả models
 dbt test      # Chạy data quality tests
 dbt docs generate && dbt docs serve  # Xem lineage graph
 ```
-
-## Files thêm mới so với bản gốc
-
-| File | Mô tả |
-|------|-------|
-| `scripts/gcs_upload.py` | Export staging → GCS Parquet |
-| `scripts/bq_load.py` | Load GCS → BigQuery |
-| `scripts/db.py` | Connection helper (PG + BQ) |
-| `dbt/models/staging/*.sql` | dbt staging views |
-| `dbt/models/warehouse/fct_orders.sql` | Incremental fact table trên BQ |
-| `dbt/models/marts/*.sql` | Business metric tables |
-| `dbt/models/schema.yml` | dbt tests (not_null, unique, accepted_values) |
-
 ## Chi phí ước tính (GCP Free Tier)
 
 - **GCS:** 5 GB free/tháng — Parquet ~250 orders/day ≈ vài KB/ngày → **$0**
