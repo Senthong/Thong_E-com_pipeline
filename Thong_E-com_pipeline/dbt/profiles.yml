@@ -7,7 +7,7 @@ ecom_pipeline:
       project: "{{ env_var('GCP_PROJECT_ID') }}"
       dataset: "{{ env_var('BQ_DATASET', 'ecom_warehouse') }}"
       keyfile: "{{ env_var('GOOGLE_APPLICATION_CREDENTIALS') }}"
-      location: US
+      location: asia-southeast1
       threads: 4
       timeout_seconds: 300
 
@@ -17,6 +17,6 @@ ecom_pipeline:
       project: "{{ env_var('GCP_PROJECT_ID') }}"
       dataset: ecom_warehouse_prod
       keyfile: "{{ env_var('GOOGLE_APPLICATION_CREDENTIALS') }}"
-      location: US
+      location: asia-southeast1
       threads: 8
       timeout_seconds: 300
