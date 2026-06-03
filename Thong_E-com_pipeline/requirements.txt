@@ -1,15 +1,14 @@
 apache-airflow==2.8.1
 psycopg2-binary==2.9.9
-faker==22.2.0
 pandas==2.2.0
 pyarrow==15.0.0
 
-# GCP — thêm mới
+# GCP
 google-cloud-storage==2.14.0
 google-cloud-bigquery==3.17.2
 google-cloud-bigquery-storage==2.24.0
 db-dtypes==1.2.0
 
-# dbt — thêm mới
+# dbt
 dbt-core==1.7.0
 dbt-bigquery==1.7.0

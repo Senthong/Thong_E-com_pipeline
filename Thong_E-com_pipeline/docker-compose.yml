@@ -47,6 +47,8 @@ services:
       BQ_DATASET: ${BQ_DATASET:-ecom_warehouse}
       BQ_LOCATION: US
       GOOGLE_APPLICATION_CREDENTIALS: /opt/airflow/secrets/gcp-sa-key.json
+      OLIST_DATA_DIR: /opt/airflow/data/olist
+      RANDOM_SEED: ${RANDOM_SEED:-42}
 
     volumes:
       - ./dags:/opt/airflow/dags
@@ -54,6 +56,7 @@ services:
       - ./dbt:/opt/airflow/dbt
       - airflow_logs:/opt/airflow/logs
       - ./secrets:/opt/airflow/secrets:ro
+      - ${OLIST_DATA_DIR:-./data/olist}:/opt/airflow/data/olist:ro
     ports:
       - "8080:8080"
     command: |

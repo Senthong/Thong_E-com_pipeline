@@ -1,13 +1,3 @@
-"""
-bq_load.py  ← NEW
-Load Parquet files từ GCS vào BigQuery (raw layer).
-dbt sẽ đọc từ đây để transform → warehouse → marts.
-
-Dùng BigQuery Load Job (batch) thay vì streaming insert để:
-- Tiết kiệm chi phí
-- Phù hợp với daily batch pipeline
-- Có audit log rõ ràng
-"""
 import os
 from datetime import date
 
@@ -20,7 +10,6 @@ GCS_BUCKET = os.getenv("GCS_BUCKET", "ecom-pipeline-raw")
 GCS_PREFIX = os.getenv("GCS_PREFIX", "staging")
 
 
-# Schema definitions cho từng table
 SCHEMAS = {
     "orders": [
         bigquery.SchemaField("order_id",     "STRING",  mode="REQUIRED"),
